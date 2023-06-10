@@ -207,7 +207,7 @@ const client_s3_1 = __nccwpck_require__(19250);
 const fs = __importStar(__nccwpck_require__(57147));
 const cfn_guard_rule_executor_1 = __nccwpck_require__(82624);
 const crypto_1 = __nccwpck_require__(6113);
-const ruleLocation = '/tmp/rule.guard';
+const ruleLocation = 'rule.guard';
 async function writeTempFile(param) {
     var _a;
     core.notice('Writing the rule to the filesystem');
