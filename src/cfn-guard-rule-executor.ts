@@ -14,11 +14,11 @@ export class CfnGuardRuleExecutor {
 
   private install(): void {
     shell.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null')
-    // shell.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
-    // const ret = shell.exec('source "$HOME/.cargo/env" && cfn-guard --version')
-    // if (ret.code !== 0) {
-    //   core.setFailed(`Unable to install cfn-guard: ${JSON.stringify(ret)}`)
-    // }
+    shell.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
+    const ret = shell.exec('source "$HOME/.cargo/env" && cfn-guard --version')
+    if (ret.code !== 0) {
+      core.setFailed(`Unable to install cfn-guard: ${JSON.stringify(ret)}`)
+    }
   }
 
   validate(

@@ -13,6 +13,7 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 env:
   AWS_REGION: 'us-west-2'
+  ACTIONS_STEP_DEBUG: true
 permissions:
   id-token: write
   contents: read
