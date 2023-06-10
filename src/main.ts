@@ -28,7 +28,10 @@ async function writeTempFile(param: WriteTempFileParam): Promise<boolean> {
       .update(param.rawRuleContent)
       .digest('hex')
     if (expected === actual) {
-      fs.writeFileSync(ruleLocation, param.rawRuleContent)
+      fs.writeFile(ruleLocation, param.rawRuleContent, (...args: unknown[]) => {
+        // eslint-disable-next-line no-console
+        console.log(args)
+      })
       return true
     } else {
       core.setFailed(
