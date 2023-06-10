@@ -15,7 +15,7 @@ interface WriteTempFileParam {
   s3Client: S3Client
 }
 async function writeTempFile(param: WriteTempFileParam): Promise<boolean> {
-  core.debug('Writing the rule to the filesystem')
+  core.notice('Writing the rule to the filesystem')
   if (param.rawRuleContent) {
     const hashResult = await param.s3Client.send(
       new GetObjectCommand({
@@ -41,8 +41,6 @@ async function writeTempFile(param: WriteTempFileParam): Promise<boolean> {
 
 async function run(): Promise<void> {
   try {
-    // eslint-disable-next-line no-console
-    console.log('I am here')
     const ruleRegistryBucket = core.getInput('RuleRegistryBucket')
     const ruleSetName = core.getInput('RuleSetName')
     const version = core.getInput('Version')
@@ -57,7 +55,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter RuleRegistryBucket ${ruleRegistryBucket}.  RuleRegistryBucket must be a valid bucket name`
       )
     } else {
-      core.debug('RuleRegistryBucket is valid')
+      core.notice('RuleRegistryBucket is valid')
     }
 
     if (!failed && !validator.isValidVersion(version)) {
@@ -65,7 +63,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter Version ${version}.  Version must be a valid version`
       )
     } else {
-      core.debug('Version is valid')
+      core.notice('Version is valid')
     }
 
     if (!failed && !validator.isFolderValid(cloudFormationPath)) {
@@ -73,7 +71,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter CloudFormationFolder ${cloudFormationPath}.  CloudFormationFolder must be a valid path`
       )
     } else {
-      core.debug('CloudFormationFolder is valid')
+      core.notice('CloudFormationFolder is valid')
     }
 
     if (!failed && !validator.isValidOutputFormat(outputFormatStr)) {
@@ -81,12 +79,12 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter OutputFormat ${outputFormatStr}.  OutputFormat must be either JSON or SINGLE_LINE_SUMMARY`
       )
     } else {
-      core.debug('OutputFormat is valid')
+      core.notice('OutputFormat is valid')
       outputFormat = outputFormatStr as OutputFormat
     }
 
     // Action Code start
-    core.debug('Starting download of the rule')
+    core.notice('Starting download of the rule')
     const s3Client = new S3Client({})
     const result = await s3Client.send(
       new GetObjectCommand({
@@ -104,9 +102,9 @@ async function run(): Promise<void> {
         s3Client
       })
       if (isValid) {
-        core.debug('Starting up executor')
+        core.notice('Starting up executor')
         const executor = new CfnGuardRuleExecutor()
-        core.debug('Running CloudFormation Guard')
+        core.notice('Running CloudFormation Guard')
         executor.validate(ruleLocation, cloudFormationPath, outputFormat)
       }
     }
