@@ -36,7 +36,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - uses: ./
         with:
-          CloudFormationFolder: __tests__/templates
+          CloudFormationPath: __tests__/templates
           OutputFormat: SINGLE_LINE_SUMMARY
           RuleRegistryBucket: cfn-guard-registry-819163596280
           Version: '1.0.0'
