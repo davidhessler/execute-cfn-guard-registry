@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import {CfnGuardRuleExecutor, OutputFormat} from './cfn-guard-rule-executor'
 import {createHash} from 'crypto'
 
-const ruleLocation = '/tmp/rule.guard'
+const ruleLocation = 'rule.guard'
 
 interface WriteTempFileParam {
   rawRuleContent: string
