@@ -233,7 +233,8 @@ async function writeTempFile(param) {
 async function run() {
     var _a;
     try {
-        core.info('I am here');
+        // eslint-disable-next-line no-console
+        console.log('I am here');
         const ruleRegistryBucket = core.getInput('RuleRegistryBucket');
         const ruleSetName = core.getInput('RuleSetName');
         const version = core.getInput('Version');

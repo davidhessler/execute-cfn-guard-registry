@@ -41,7 +41,8 @@ async function writeTempFile(param: WriteTempFileParam): Promise<boolean> {
 
 async function run(): Promise<void> {
   try {
-    core.info('I am here')
+    // eslint-disable-next-line no-console
+    console.log('I am here')
     const ruleRegistryBucket = core.getInput('RuleRegistryBucket')
     const ruleSetName = core.getInput('RuleSetName')
     const version = core.getInput('Version')
