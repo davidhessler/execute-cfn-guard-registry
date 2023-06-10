@@ -42,4 +42,3 @@ jobs:
           RuleRegistryBucket: cfn-guard-registry-819163596280
           Version: '1.0.0'
           RuleSetName: cmmc-level-1
-          Debug: true
