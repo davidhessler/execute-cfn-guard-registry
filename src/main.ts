@@ -95,7 +95,9 @@ async function run(): Promise<void> {
         Key: `${version}/${ruleSetName}.guard`
       })
     )
+    core.notice('Successfully downloaded the file');
     const rawRuleContent = await result.Body?.transformToString()
+    core.notice('Finished transforming file');
     if (rawRuleContent) {
       const isValid = await writeTempFile({
         rawRuleContent,
