@@ -43,7 +43,7 @@ var OutputFormat;
 class CfnGuardRuleExecutor {
     async install() {
         shell.exec('sudo apt-get update && sudo apt-get install -y bash');
-        shell.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null');
+        shell.exec('curl https://sh.rustup.rs -sSf | bash -s -- -y > /dev/null');
         await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard');
         const ret = await exec.exec('source "$HOME/.cargo/env" && cfn-guard --version');
         if (ret !== 0) {
