@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  GoodRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+  GoodPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: "SpecificPolicy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: 'ec2:DescribeInstance'
+            Resource: 'i-0123459789012'
+      Roles:
+        - !Ref BadRole

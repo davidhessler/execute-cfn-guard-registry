@@ -1,11 +1,31 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Execute-CfnGuardRegistry'
+description: 'This action takes the combined rule, downloads it, and executed the rule using AWS CloudFormation Guard'
+author: 'davidhessler'
+branding:
+  icon: download-cloud
+  color: blue
 inputs:
-  milliseconds: # change this
+  RuleRegistryBucket:
+    description: 'The Amazon S3 Bucket where the CloudFormation Guard Registry rules are stored'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  RuleSetName:
+    description: 'The name of the rule set you would like to execute'
+    required: true
+  Version:
+    description: 'The version of the rule set.  May either be a semver version or latest'
+    required: true
+  CloudFormationPath:
+    description: 'The path where CloudFormation Templates are stored'
+    required: false
+    default: '.'
+  OutputFormat:
+    description: 'The output format for CloudFormation Guard.  Valid options are SINGLE_LINE_SUMMARY or JSON.  default is JSON'
+    required: false
+    default: 'JSON'
+  Debug:
+    description: 'Enable debug logging'
+    required: false
+    default: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

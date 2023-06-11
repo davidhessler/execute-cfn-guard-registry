@@ -1,11 +1,22 @@
 name: 'build-test'
 on: # rebuild any PRs and main branch changes
   pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CODEOWNERS'
+      - '.gitignore'
+      - 'dist/**'
   push:
     branches:
       - main
       - 'releases/*'
-
+env:
+  AWS_REGION: 'us-west-2'
+  ACTIONS_STEP_DEBUG: true
+permissions:
+  id-token: write
+  contents: read
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
@@ -19,6 +30,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v2.1.0
+        with:
+          role-to-assume: 'arn:aws:iam::819163596280:role/GitHubPublishActionRole'
+          role-session-name: 'GitHub_to_AWS_via_FederatedOIDC'
+          aws-region: ${{ env.AWS_REGION }}
       - uses: ./
         with:
-          milliseconds: 1000
+          CloudFormationPath: __tests__/templates
+          OutputFormat: SINGLE_LINE_SUMMARY
+          RuleRegistryBucket: cfn-guard-registry-819163596280
+          Version: '1.0.0'
+          RuleSetName: cmmc-level-1
