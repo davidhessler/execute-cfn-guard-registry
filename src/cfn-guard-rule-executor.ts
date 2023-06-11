@@ -15,10 +15,9 @@ export class CfnGuardRuleExecutor {
       'curl https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init > rustup-init'
     )
     shell.exec('chmod +x rustup-init && ./rustup-init -y')
-    shell.exec('curl https://sh.rustup.rs -sSf | bash -s -- -y > /dev/null')
-    await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
+    await exec.exec('PATH="$HOME/.cargo/bin:$PATH" cargo install cfn-guard')
     const ret = await exec.exec(
-      'source "$HOME/.cargo/env" && cfn-guard --version'
+      'PATH="$HOME/.cargo/bin:$PATH" cfn-guard --version'
     )
     if (ret !== 0) {
       core.setFailed(`Unable to install cfn-guard: ${JSON.stringify(ret)}`)
