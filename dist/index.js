@@ -52,7 +52,7 @@ class CfnGuardRuleExecutor {
         }
     }
     async validate(rulesPath, templatesPath, output) {
-        let cmd = `source "$HOME/.cargo/env" && cfn-guard validate --data ${templatesPath} --rules ${rulesPath}`;
+        let cmd = `$HOME/.cargo/bin/cfn-guard validate --data ${templatesPath} --rules ${rulesPath}`;
         core.debug(cmd);
         switch (output) {
             case OutputFormat.JSON:
