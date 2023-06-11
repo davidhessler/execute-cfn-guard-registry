@@ -45,8 +45,8 @@ class CfnGuardRuleExecutor {
         shell.exec('sudo apt-get update && sudo apt-get install -y bash coreutils curl gcc');
         shell.exec('curl https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init > rustup-init');
         shell.exec('chmod +x rustup-init && ./rustup-init -y');
-        shell.exec('PATH="$HOME/.cargo/bin:$PATH" cargo install cfn-guard');
-        const ret = shell.exec('PATH="$HOME/.cargo/bin:$PATH" cfn-guard --version');
+        shell.exec('$HOME/.cargo/bin/cargo install cfn-guard');
+        const ret = shell.exec('$HOME/.cargo/bin/cfn-guard --version');
         if (ret.code !== 0) {
             core.setFailed(`Unable to install cfn-guard: ${JSON.stringify(ret)}`);
         }
