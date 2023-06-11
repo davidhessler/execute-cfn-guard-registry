@@ -10,7 +10,11 @@ export enum OutputFormat {
 
 export class CfnGuardRuleExecutor {
   async install(): Promise<void> {
-    shell.exec('sudo apt-get update && sudo apt-get install -y bash')
+    shell.exec('sudo apt-get update && sudo apt-get install -y bash coreutils')
+    shell.exec(
+      'curl https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init > rustup-init'
+    )
+    shell.exec('chmod +x rustup-init && ./rustup-init -y')
     shell.exec('curl https://sh.rustup.rs -sSf | bash -s -- -y > /dev/null')
     await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
     const ret = await exec.exec(
