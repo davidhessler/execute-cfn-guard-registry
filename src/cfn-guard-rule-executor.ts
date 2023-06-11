@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import * as shell from 'shelljs'
-import * as exec from '@actions/exec'
 
 // eslint-disable-next-line no-shadow
 export enum OutputFormat {
@@ -40,8 +39,8 @@ export class CfnGuardRuleExecutor {
         cmd += ' --output-format single-line-summary'
         break
     }
-    const result = await exec.exec(cmd)
-    if (result === 5) {
+    const result = shell.exec(cmd)
+    if (result.code === 5) {
       core.setFailed('CloudFormation Guard detected an error')
     }
   }
