@@ -223,10 +223,8 @@ async function writeTempFile(param) {
             .update(param.rawRuleContent)
             .digest('hex');
         if (expected === actual) {
-            fs.writeFile(ruleLocation, param.rawRuleContent, (...args) => {
-                // eslint-disable-next-line no-console
-                console.log(args);
-            });
+            fs.writeFileSync(ruleLocation, param.rawRuleContent);
+            core.notice('Successfully wrote the rule to the filesystem');
             return true;
         }
         else {
