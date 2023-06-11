@@ -42,7 +42,7 @@ var OutputFormat;
 })(OutputFormat = exports.OutputFormat || (exports.OutputFormat = {}));
 class CfnGuardRuleExecutor {
     async install() {
-        await exec.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null');
+        await exec.exec("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh");
         await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard');
         const ret = await exec.exec('source "$HOME/.cargo/env" && cfn-guard --version');
         if (ret !== 0) {
@@ -274,7 +274,9 @@ async function run() {
             Bucket: ruleRegistryBucket,
             Key: `${version}/${ruleSetName}.guard`
         }));
+        core.notice('Successfully downloaded the file');
         const rawRuleContent = await ((_a = result.Body) === null || _a === void 0 ? void 0 : _a.transformToString());
+        core.notice('Finished transforming file');
         if (rawRuleContent) {
             const isValid = await writeTempFile({
                 rawRuleContent,
