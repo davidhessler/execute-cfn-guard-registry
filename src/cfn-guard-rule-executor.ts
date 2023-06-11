@@ -43,5 +43,9 @@ export class CfnGuardRuleExecutor {
     if (result.code === 5) {
       core.setFailed('CloudFormation Guard detected an error')
     }
+
+    if(result.code === 0){
+      core.notice('CloudFormation Guard detected no errors')
+    }
   }
 }
