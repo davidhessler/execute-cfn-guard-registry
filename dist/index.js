@@ -42,6 +42,7 @@ var OutputFormat;
 })(OutputFormat = exports.OutputFormat || (exports.OutputFormat = {}));
 class CfnGuardRuleExecutor {
     async install() {
+        shell.exec('cat /etc/os-release');
         shell.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null');
         await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard');
         const ret = await exec.exec('source "$HOME/.cargo/env" && cfn-guard --version');
