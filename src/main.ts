@@ -1,11 +1,11 @@
 import * as core from '@actions/core'
+import * as fs from 'fs'
 import {InputValidator} from './input-validator'
 import {GetObjectCommand, S3Client} from '@aws-sdk/client-s3'
-import * as fs from 'fs'
 import {CfnGuardRuleExecutor, OutputFormat} from './cfn-guard-rule-executor'
 import {createHash} from 'crypto'
 
-const ruleLocation = 'rule.guard'
+const ruleLocation = `${__dirname}/temp.guard`
 
 interface WriteTempFileParam {
   rawRuleContent: string
@@ -107,6 +107,7 @@ async function run(): Promise<void> {
       if (isValid) {
         core.notice('Starting up executor')
         const executor = new CfnGuardRuleExecutor()
+        await executor.install()
         core.notice('Running CloudFormation Guard')
         executor.validate(ruleLocation, cloudFormationPath, outputFormat)
       }

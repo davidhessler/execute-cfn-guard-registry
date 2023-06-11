@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
-import * as shell from 'shelljs'
+// import * as shell from 'shelljs'
+import * as exec from '@actions/exec'
 
 // eslint-disable-next-line no-shadow
 export enum OutputFormat {
@@ -8,24 +9,22 @@ export enum OutputFormat {
 }
 
 export class CfnGuardRuleExecutor {
-  constructor() {
-    this.install()
-  }
-
-  private install(): void {
-    shell.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null')
-    shell.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
-    const ret = shell.exec('source "$HOME/.cargo/env" && cfn-guard --version')
-    if (ret.code !== 0) {
+  async install(): Promise<void> {
+    await exec.exec('curl https://sh.rustup.rs -sSf | sh -s -- -y > /dev/null')
+    await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
+    const ret = await exec.exec(
+      'source "$HOME/.cargo/env" && cfn-guard --version'
+    )
+    if (ret !== 0) {
       core.setFailed(`Unable to install cfn-guard: ${JSON.stringify(ret)}`)
     }
   }
 
-  validate(
+  async validate(
     rulesPath: string,
     templatesPath: string,
     output: OutputFormat
-  ): void {
+  ): Promise<void> {
     let cmd = `source "$HOME/.cargo/env" && cfn-guard validate --data ${templatesPath} --rules ${rulesPath}`
     core.debug(cmd)
     switch (output) {
@@ -37,9 +36,9 @@ export class CfnGuardRuleExecutor {
         cmd += ' --output-format single-line-summary'
         break
     }
-    const result = shell.exec(cmd)
-    if (result.code === 5) {
-      core.setFailed(result.stdout)
+    const result = await exec.exec(cmd)
+    if (result === 5) {
+      core.setFailed('CloudFormation Guard detected an error')
     }
   }
 }

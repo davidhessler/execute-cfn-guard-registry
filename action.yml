@@ -1,6 +1,9 @@
 name: 'Execute-CfnGuardRegistry'
 description: 'This action takes the combined rule, downloads it, and executed the rule using AWS CloudFormation Guard'
 author: 'davidhessler'
+branding:
+  icon: download-cloud
+  color: blue
 inputs:
   RuleRegistryBucket:
     description: 'The Amazon S3 Bucket where the CloudFormation Guard Registry rules are stored'
