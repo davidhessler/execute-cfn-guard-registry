@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-// import * as shell from 'shelljs'
+import * as shell from 'shelljs'
 import * as exec from '@actions/exec'
 
 // eslint-disable-next-line no-shadow
@@ -10,7 +10,7 @@ export enum OutputFormat {
 
 export class CfnGuardRuleExecutor {
   async install(): Promise<void> {
-    await exec.exec('curl -sSf https://sh.rustup.rs | sh')
+    shell.exec('curl -sSf https://sh.rustup.rs | sh')
     await exec.exec('source "$HOME/.cargo/env" && cargo install cfn-guard')
     const ret = await exec.exec(
       'source "$HOME/.cargo/env" && cfn-guard --version'
