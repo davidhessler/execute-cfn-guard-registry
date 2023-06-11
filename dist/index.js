@@ -51,9 +51,6 @@ class CfnGuardRuleExecutor {
         }
     }
     async validate(rulesPath, templatesPath, output) {
-        core.notice('#### BEGIN OF FILE');
-        shell.cat(rulesPath);
-        core.notice('#### END OF FILE');
         let cmd = `$HOME/.cargo/bin/cfn-guard validate --data ${templatesPath} --rules ${rulesPath}`;
         core.debug(cmd);
         switch (output) {
@@ -248,25 +245,25 @@ async function run() {
             core.setFailed(`Action Failed, reason: invalid parameter RuleRegistryBucket ${ruleRegistryBucket}.  RuleRegistryBucket must be a valid bucket name`);
         }
         else {
-            core.notice('RuleRegistryBucket is valid');
+            core.debug('RuleRegistryBucket is valid');
         }
         if (!failed && !validator.isValidVersion(version)) {
             core.setFailed(`Action Failed, reason: invalid parameter Version ${version}.  Version must be a valid version`);
         }
         else {
-            core.notice('Version is valid');
+            core.debug('Version is valid');
         }
         if (!failed && !validator.isFolderValid(cloudFormationPath)) {
             core.setFailed(`Action Failed, reason: invalid parameter CloudFormationFolder ${cloudFormationPath}.  CloudFormationFolder must be a valid path`);
         }
         else {
-            core.notice('CloudFormationFolder is valid');
+            core.debug('CloudFormationFolder is valid');
         }
         if (!failed && !validator.isValidOutputFormat(outputFormatStr)) {
             core.setFailed(`Action Failed, reason: invalid parameter OutputFormat ${outputFormatStr}.  OutputFormat must be either JSON or SINGLE_LINE_SUMMARY`);
         }
         else {
-            core.notice('OutputFormat is valid');
+            core.debug('OutputFormat is valid');
             outputFormat = outputFormatStr;
         }
         // Action Code start
@@ -278,7 +275,7 @@ async function run() {
         }));
         core.notice('Successfully downloaded the file');
         const rawRuleContent = await ((_a = result.Body) === null || _a === void 0 ? void 0 : _a.transformToString());
-        core.notice('Finished transforming file');
+        core.debug('Finished transforming file');
         if (rawRuleContent) {
             const isValid = await writeTempFile({
                 rawRuleContent,
@@ -288,7 +285,7 @@ async function run() {
                 s3Client
             });
             if (isValid) {
-                core.notice('Starting up executor');
+                core.debug('Starting up executor');
                 const executor = new cfn_guard_rule_executor_1.CfnGuardRuleExecutor();
                 await executor.install();
                 core.notice('Running CloudFormation Guard');

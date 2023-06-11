@@ -56,7 +56,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter RuleRegistryBucket ${ruleRegistryBucket}.  RuleRegistryBucket must be a valid bucket name`
       )
     } else {
-      core.notice('RuleRegistryBucket is valid')
+      core.debug('RuleRegistryBucket is valid')
     }
 
     if (!failed && !validator.isValidVersion(version)) {
@@ -64,7 +64,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter Version ${version}.  Version must be a valid version`
       )
     } else {
-      core.notice('Version is valid')
+      core.debug('Version is valid')
     }
 
     if (!failed && !validator.isFolderValid(cloudFormationPath)) {
@@ -72,7 +72,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter CloudFormationFolder ${cloudFormationPath}.  CloudFormationFolder must be a valid path`
       )
     } else {
-      core.notice('CloudFormationFolder is valid')
+      core.debug('CloudFormationFolder is valid')
     }
 
     if (!failed && !validator.isValidOutputFormat(outputFormatStr)) {
@@ -80,7 +80,7 @@ async function run(): Promise<void> {
         `Action Failed, reason: invalid parameter OutputFormat ${outputFormatStr}.  OutputFormat must be either JSON or SINGLE_LINE_SUMMARY`
       )
     } else {
-      core.notice('OutputFormat is valid')
+      core.debug('OutputFormat is valid')
       outputFormat = outputFormatStr as OutputFormat
     }
 
@@ -95,7 +95,7 @@ async function run(): Promise<void> {
     )
     core.notice('Successfully downloaded the file')
     const rawRuleContent = await result.Body?.transformToString()
-    core.notice('Finished transforming file')
+    core.debug('Finished transforming file')
     if (rawRuleContent) {
       const isValid = await writeTempFile({
         rawRuleContent,
@@ -105,7 +105,7 @@ async function run(): Promise<void> {
         s3Client
       })
       if (isValid) {
-        core.notice('Starting up executor')
+        core.debug('Starting up executor')
         const executor = new CfnGuardRuleExecutor()
         await executor.install()
         core.notice('Running CloudFormation Guard')

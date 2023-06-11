@@ -28,9 +28,6 @@ export class CfnGuardRuleExecutor {
     templatesPath: string,
     output: OutputFormat
   ): Promise<void> {
-    core.notice('#### BEGIN OF FILE')
-    shell.cat(rulesPath)
-    core.notice('#### END OF FILE')
     let cmd = `$HOME/.cargo/bin/cfn-guard validate --data ${templatesPath} --rules ${rulesPath}`
     core.debug(cmd)
     switch (output) {
