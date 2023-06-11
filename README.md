@@ -93,9 +93,13 @@ See the [versioning documentation](https://github.com/actions/toolkit/blob/maste
 You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
 
 ```yaml
-uses: ./
-with:
-  milliseconds: 1000
+uses: davidhessler/execute-cfn-guard-registry@v1.0.0
+with: 
+  CloudFormationPath: __tests__/templates
+  OutputFormat: SINGLE_LINE_SUMMARY
+  RuleRegistryBucket: cfn-guard-registry-819163596280
+  Version: '1.0.0'
+  RuleSetName: cmmc-level-1
 ```
 
 See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
